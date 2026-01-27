@@ -19,23 +19,38 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
 
 ## Run the simulator (PowerShell)
 
-This repo includes a bundled JDK under `openJdk-25/`.
+### Prerequisites
+
+- Install a JDK locally (recommended: Temurin / Microsoft Build of OpenJDK).
+- This repository does **not** include OpenJDK binaries (they are ignored via `.gitignore`).
+
+You can either:
+
+- Ensure `java`/`javac` are available on your `PATH`, or
+- Set `JAVA_HOME` to your JDK installation directory.
 
 Build (clean compile to `out/`):
 
 ```powershell
-cd "c:\Users\yomas\Desktop\SSL-AI\ssl-robot-ai"
+cd "ssl-robot-ai"
+
+# Optional: point this to your installed JDK.
+# $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.2.13-hotspot"
+
+$javac = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME "bin\javac.exe" } else { "javac" }
+$java  = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME "bin\java.exe" } else { "java" }
+
 if (Test-Path .\out) { Remove-Item -Recurse -Force .\out }
 New-Item -ItemType Directory -Path .\out | Out-Null
 
 $sources = Get-ChildItem -Path .\src\main\java -Recurse -Filter *.java | ForEach-Object { $_.FullName }
-& .\openJdk-25\bin\javac.exe -encoding UTF-8 -d .\out -cp "lib\*" $sources
+& $javac -encoding UTF-8 -d .\out -cp "lib\*" $sources
 ```
 
 Run:
 
 ```powershell
-& .\openJdk-25\bin\java.exe -cp ".\out;lib\*" sim.Main
+& $java -cp ".\out;lib\*" sim.Main
 ```
 
 Controls:
