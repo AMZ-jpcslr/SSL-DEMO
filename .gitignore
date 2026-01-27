@@ -1,0 +1,6 @@
+# Bundled JDK (too large for GitHub; keep local)
+ssl-robot-ai/openJdk-25/
+openJdk-25/
+
+# Also ignore other bundled OpenJDK versions, if added later
+**/openJdk-*/
