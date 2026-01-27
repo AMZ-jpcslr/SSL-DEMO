@@ -1,35 +1,38 @@
-## Getting Started
+## SSL Robot AI シミュレーター
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+ロボカップSSL風の2Dシミュレーター（Java）です。`sim.Main` を起動するとGUIが立ち上がり、ロボットが自律的に動きます。
 
-## Folder Structure
+### ざっくり図（イメージ）
 
-The workspace contains two folders by default, where:
+```
+	+---------------------------------------+
+	|  BLUE o o o                o o o RED  |
+	|                                       |
+	|                 (  ball  )            |
+	|                                       |
+	+---------------------------------------+
+		 Space: start/stop     R: reset
+```
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## フォルダ構成
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+- `src/` : Javaソース
+- `lib/` : 依存ライブラリ（クラスパスに追加）
+- `out/` : ローカルビルド成果物（手順で作成）
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## 実行手順（Windows / PowerShell）
 
-## Dependency Management
+### 事前準備（JDKは各自用意）
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- JDKをローカルにインストールしてください（例: Temurin / Microsoft Build of OpenJDK）。
+- このリポジトリにはOpenJDK本体は含めません（容量が大きいため `.gitignore` で除外しています）。
 
-## Run the simulator (PowerShell)
+どちらかを満たせばOKです:
 
-### Prerequisites
+- `java` / `javac` が `PATH` から実行できる
+- `JAVA_HOME` にJDKのパスを設定している
 
-- Install a JDK locally (recommended: Temurin / Microsoft Build of OpenJDK).
-- This repository does **not** include OpenJDK binaries (they are ignored via `.gitignore`).
-
-You can either:
-
-- Ensure `java`/`javac` are available on your `PATH`, or
-- Set `JAVA_HOME` to your JDK installation directory.
-
-Build (clean compile to `out/`):
+### ビルド（`out/` にクリーンコンパイル）
 
 ```powershell
 cd "ssl-robot-ai"
@@ -47,13 +50,13 @@ $sources = Get-ChildItem -Path .\src\main\java -Recurse -Filter *.java | ForEach
 & $javac -encoding UTF-8 -d .\out -cp "lib\*" $sources
 ```
 
-Run:
+### 実行
 
 ```powershell
 & $java -cp ".\out;lib\*" sim.Main
 ```
 
-Controls:
+## 操作
 
 - `Space`: start/stop
 - `R`: reset positions and ball
