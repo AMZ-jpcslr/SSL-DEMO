@@ -41,6 +41,20 @@ $sources = Get-ChildItem -Path .\src\main\java -Recurse -Filter *.java | ForEach
 ### 実行
 
 ```powershell
+cd "ssl-robot-ai"
+
+# Optional: point this to your installed JDK.
+# $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.2.13-hotspot"
+
+$javac = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME "bin\javac.exe" } else { "javac" }
+$java  = if ($env:JAVA_HOME) { Join-Path $env:JAVA_HOME "bin\java.exe" } else { "java" }
+
+if (Test-Path .\out) { Remove-Item -Recurse -Force .\out }
+New-Item -ItemType Directory -Path .\out | Out-Null
+
+$sources = Get-ChildItem -Path .\src\main\java -Recurse -Filter *.java | ForEach-Object { $_.FullName }
+& $javac -encoding UTF-8 -d .\out -cp "lib\*" $sources
+
 & $java -cp ".\out;lib\*" sim.Main
 ```
 
